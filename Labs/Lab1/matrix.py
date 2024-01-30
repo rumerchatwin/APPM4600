@@ -20,6 +20,6 @@ def dotProduct(x,y,n):
     # Computes the dot product of the n x 1 vectors x and y
     dp = 0.
     for j in range(n):
-    dp = dp + x[j]*y[j]
+        dp = dp + x[j]*y[j]
     return dp
 driver()
