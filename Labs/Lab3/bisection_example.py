@@ -69,9 +69,9 @@ def bisection(f,a,b,tol,Nmax):
     return [astar,ier] 
 
 # use routines    
-f = lambda x: x**3+x-4
-a = 1
-b = 4
+f = lambda x: x**2 * (x-1)
+a = -0.5
+b = 0.5
 
 Nmax = 100
 tol = 1e-3
