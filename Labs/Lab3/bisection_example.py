@@ -19,7 +19,8 @@ def bisection(f,a,b,tol,Nmax):
     '''
 
     '''     first verify there is a root we can find in the interval '''
-    fa = f(a); fb = f(b);
+    fa = f(a)
+    fb = f(b)
     if (fa*fb>0):
        ier = 1
        astar = a
