@@ -5,7 +5,7 @@ def problem3(x):
     value = y - 1
     return value
 
-x1 = 2.5
+x1 = 4.5
 ystar = problem3(x1)
 
 print ('ystar1 is', ystar)
