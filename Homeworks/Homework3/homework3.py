@@ -5,10 +5,10 @@ t = np.arange(0, np.pi, np.pi/30)
 # create a vector for y
 y = np.cos(t)
 
-N = np.range(t)
+N = len(t)
 k = 1
 
-for k in range(t):
+for k in range(len(t)):
     S = t[k] * y[k]
     k = k + 1
     print('the sum is', S)
