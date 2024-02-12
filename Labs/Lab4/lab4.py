@@ -25,6 +25,7 @@ def fixedpt(f,x0,tol,Nmax):
 
 # use routines 
 #f1 = lambda x: x - (x**5 -7)/(5*x**4)
+
 f1 = lambda x: x * (1 + (7 - x**5)/x**2)**3
 ''' 
 fixed point is alpha1 = 1.4987....
@@ -38,7 +39,7 @@ fixed point is alpha2 = 3.09...
 
 Nmax = 100
 tol = 1e-10
-
+x = np.zeros((Nmax,1))
 ''' test f1 '''
 x0 = 1.0
 [xstar,ier] = fixedpt(f1,x0,tol,Nmax)
