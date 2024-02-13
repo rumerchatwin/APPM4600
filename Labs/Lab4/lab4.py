@@ -20,7 +20,6 @@ def driver():
     print('f1(xstar):',f1(xstar))
     print('Error message reads:',ier)
     print('the iterations are', p_vector)
-    #convergence = ooc(f1(xstar), p_vector)
 #test f2 '''
     x0 = 0.0
     [xstar,ier,p_vector] = fixedpt(f2,x0,tol,Nmax)
@@ -28,7 +27,6 @@ def driver():
     print('f2(xstar):',f2(xstar))
     print('Error message reads:',ier)
     print('the iterations are', p_vector)
-    #convergence2 = ooc(f2(xstar), p_vector)
 
 
 
@@ -55,22 +53,7 @@ def fixedpt(f,x0,tol,Nmax):
     return [xstar, ier,p_vector]
 
 
-def ooc(p, p_vector):
-    n = 0
-    convergence = 0
-    while n in range(2):
-        limit = abs(p_vector[n+1] - p) / abs(p_vector[n] - p)**n
 
-        if (n == 1):
-            if(limit < 1):
-                print('Lineraly Converges')
-        elif(n == 2):
-            convergence = 2
-            print('Quadraticaly convergent')
-
-    if (convergence != 1):
-        if(convergence !=2):
-            print('error in convergence')
 
 
 driver()
