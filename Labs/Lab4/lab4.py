@@ -64,20 +64,31 @@ def fixedpt(f,x0,tol,Nmax):
     ier = 1
     return [xstar, ier,p_vector]
 
+def ooc(p, p_vector):
+    n = 0
+    convergence = 0
+    while n in range(2):
+        limit = abs(p_vector[n+1] - p) / abs(p_vector[n] - p)**n
+
+        if (n == 1):
+            if(limit < 1):
+                return[n]
+        elif(n == 2):
+            convergence = 2
+            return[n]
+    
+    return[n]
 
 #prelab 4 : 3.1 Aitken's technique
-def aitken(p, p_vector):
+def aitken(p_vector):
     
     pa_vector = np.zeros((len(p_vector), 1))
     n = 3
     k = 0
     while n in range(len(p_vector)):
-        equation1 = (p_vector[n+1] - p)/(p_vector[n] - p)
-        eqaution2 = (p_vector[n+2] - p)/(p_vector[n+1] - p)
-        if (equation1 == eqaution2):
-            pa_vector[k] = p_vector[n]
-            k = k + 1
-
+        
+        pa_vector[k] = p_vector[n] - ((p_vector[n+1] -p_vector[n])**2 / (p_vector[n+2] - 2*p_vector[n+1] + p_vector[n]) )
+        k = k + 1
     return[pa_vector]
 
 driver()
