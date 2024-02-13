@@ -20,8 +20,12 @@ def driver():
     print('f1(xstar):',f1(xstar))
     print('Error message reads:',ier)
     print('the iterations are', p_vector)
-    convergence = ooc(f1(xstar), p_vector)
-    print ('The convergence is', convergence)
+    #3.2 exercise 
+    [pa_vector] = aitken(f1(xstar), p_vector)
+    print('The aitken method vector is', pa_vector)
+
+    #[convergence] = ooc(f1(xstar), p_vector)
+    #print ('The convergence is', convergence)
 
 #test f2 '''
     x0 = 0.0
@@ -30,9 +34,11 @@ def driver():
     print('f2(xstar):',f2(xstar))
     print('Error message reads:',ier)
     print('the iterations are', p_vector)
-    convergence = ooc(f2(xstar), p_vector)
-    print ('The convergence is', convergence)
-
+    #[convergence] = ooc(f2(xstar), p_vector)
+    #print ('The convergence is', convergence)
+    #3.2 exercise 
+    #[pa_vector] = aitken(f2(xstar), p_vector)
+    #print('The aitken method vector is', pa_vector)
 
 
 # define routines
@@ -58,19 +64,20 @@ def fixedpt(f,x0,tol,Nmax):
     ier = 1
     return [xstar, ier,p_vector]
 
-def ooc(p, p_vector):
-    n = 0
-    convergence = 0
-    while n in range(2):
-        limit = abs(p_vector[n+1] - p) / abs(p_vector[n] - p)**n
 
-        if (n == 1):
-            if(limit < 1):
-                return[n]
-        elif(n == 2):
-            convergence = 2
-            return[n]
+#prelab 4 : 3.1 Aitken's technique
+def aitken(p, p_vector):
     
-    return[n]
+    pa_vector = np.zeros((len(p_vector), 1))
+    n = 3
+    k = 0
+    while n in range(len(p_vector)):
+        equation1 = (p_vector[n+1] - p)/(p_vector[n] - p)
+        eqaution2 = (p_vector[n+2] - p)/(p_vector[n+1] - p)
+        if (equation1 == eqaution2):
+            pa_vector[k] = p_vector[n]
+            k = k + 1
+
+    return[pa_vector]
 
 driver()
