@@ -16,12 +16,12 @@ def driver():
 
 # test f1 '''
     x0 = 0.0
-    [xstar,ier,p_vector] = fixedpt(f1,x0,tol,Nmax)
+    [xstar, ier, p_vector] = fixedpt(f1,x0,tol,Nmax)
     print('the approximate fixed point is:',xstar)
     print('f1(xstar):',f1(xstar))
     print('Error message reads:',ier)
     print('the iterations are', p_vector)
-    convergence = ooc(f1(xstar), p_vector)
+    #convergence = ooc(f1(xstar), p_vector)
 #test f2 '''
     x0 = 0.0
     [xstar,ier,p_vector] = fixedpt(f2,x0,tol,Nmax)
@@ -29,7 +29,7 @@ def driver():
     print('f2(xstar):',f2(xstar))
     print('Error message reads:',ier)
     print('the iterations are', p_vector)
-    convergence2 = ooc(f2(xstar), p_vector)
+    #convergence2 = ooc(f2(xstar), p_vector)
 
 
 
