@@ -86,13 +86,12 @@ def ooc(p, p_vector):
 def aitken(p_vector):
     
     pa_vector = [np.zeros((len(p_vector), 1))]
-    n = 0
+    n = 1
     count = 0
 
     while n in range(len(p_vector)):
-        if ((n+3) < len(p_vector)):
+        if ((n+2) < len(p_vector)):
             pa_vector[n] = p_vector[n] - ((p_vector[n+1] -p_vector[n])**2 / (p_vector[n+1] - 2*p_vector[n+1] + p_vector[n]) )  
-            count = count + 1
     
     return[count, pa_vector]
 
