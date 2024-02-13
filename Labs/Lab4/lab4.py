@@ -20,6 +20,7 @@ def driver():
     print('the approximate fixed point is:',xstar)
     print('f1(xstar):',f1(xstar))
     print('Error message reads:',ier)
+    print('the iterations are', p_vector)
     
 #test f2 '''
     x0 = 0.0
@@ -27,6 +28,7 @@ def driver():
     print('the approximate fixed point is:',xstar)
     print('f2(xstar):',f2(xstar))
     print('Error message reads:',ier)
+    print('the iterations are', p_vector)
 
 
 
