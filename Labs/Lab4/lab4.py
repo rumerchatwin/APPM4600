@@ -21,8 +21,10 @@ def driver():
     print('Error message reads:',ier)
     #print('the iterations are', p_vector)
     #3.2 exercise 
-    [pa_vector] = aitken(p_vector)
+    [count, pa_vector] = aitken(p_vector)
+    print('Number in array', count)
     print('The aitken method vector is', pa_vector)
+
 
     #[convergence] = ooc(f1(xstar), p_vector)
     #print ('The convergence is', convergence)
@@ -33,11 +35,12 @@ def driver():
     print('the approximate fixed point is:',xstar)
     print('f2(xstar):',f2(xstar))
     print('Error message reads:',ier)
-    print('the iterations are', p_vector)
+    #print('the iterations are', p_vector)
     #[convergence] = ooc(f2(xstar), p_vector)
     #print ('The convergence is', convergence)
     #3.2 exercise 
-    [pa_vector] = aitken(p_vector)
+    [count, pa_vector] = aitken(p_vector)
+    print('Number in array', count)
     print('The aitken method vector is', pa_vector)
 
 
@@ -82,13 +85,15 @@ def ooc(p, p_vector):
 #prelab 4 : 3.1 Aitken's technique
 def aitken(p_vector):
     
-    pa_vector = np.zeros((len(p_vector), 1))
-    n = 2
+    pa_vector = [np.zeros((len(p_vector), 1))]
+    n = 0
     count = 0
 
     while n in range(len(p_vector)):
-        pa_vector[n-2] = p_vector[n-2] - ((p_vector[n-1] -p_vector[n-2])**2 / (p_vector[n] - 2*p_vector[n-1] + p_vector[n-2]) )
-        count = count + 1    
-    return[pa_vector]
+        if ((n+3) < len(p_vector)):
+            pa_vector[n] = p_vector[n] - ((p_vector[n+1] -p_vector[n])**2 / (p_vector[n+1] - 2*p_vector[n+1] + p_vector[n]) )  
+            count = count + 1
+    
+    return[count, pa_vector]
 
 driver()
