@@ -13,7 +13,6 @@ def driver():
     Nmax = 100
     tol = 1e-6
 
-
 # test f1 '''
     x0 = 0.0
     [xstar, ier, p_vector] = fixedpt(f1,x0,tol,Nmax)
@@ -55,6 +54,7 @@ def fixedpt(f,x0,tol,Nmax):
     ier = 1
     return [xstar, ier,p_vector]
 
+
 def ooc(p, p_vector):
     n = 0
     convergence = 0
@@ -71,5 +71,6 @@ def ooc(p, p_vector):
     if (convergence != 1):
         if(convergence !=2):
             print('error in convergence')
+
 
 driver()
