@@ -100,13 +100,14 @@ def steff(p0,g,tol,Nmax):
     while n < Nmax:
         b = g(a)
         c = g(b)
-        p_vector.append(a - ((b-a)**2)/(c -2*b + a))
-        if (abs(c-b) < tol):
-            p = b
+        value = a - ((b-a)**2)/(c -2*b + a)
+        p_vector.append(value)
+        if (abs(value - a) < tol):
+            p = c
             ier = 0
             return [p , ier, p_vector]
+        a = value
         n = n + 1
-        a = b
     p = b
     ier = 1
     return[p, ier, p_vector]
@@ -117,9 +118,9 @@ def steff(p0,g,tol,Nmax):
 Nmax = 100
 g = lambda x: (10/(x+4))**0.5
 p0 = 1.5
-tol = 10**-10
+tol = 10E-10
 
 [p, ier, p_vector] = steff(p0, g, tol, Nmax)
 print('The value p is', p)
 print('The error reads', ier)
-print('The p vetcor is', p_vector)
+print('The p vector is', p_vector)
