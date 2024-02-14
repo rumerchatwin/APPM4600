@@ -20,13 +20,11 @@ def driver():
     print('f1(xstar):',f1(xstar))
     print('Error message reads:',ier)
     print('the iterations are', p_vector)
+    print('length', len(p_vector))
     #3.2 exercise 
     [pa_vector] = aitken(p_vector)
     print('The aitken method vector is', pa_vector)
 
-
-    #[convergence] = ooc(f1(xstar), p_vector)
-    #print ('The convergence is', convergence)
 
 #test f2 '''
     x0 = 0.0
@@ -34,9 +32,7 @@ def driver():
     print('the approximate fixed point is:',xstar)
     print('f2(xstar):',f2(xstar))
     print('Error message reads:',ier)
-    #print('the iterations are', p_vector)
-    #[convergence] = ooc(f2(xstar), p_vector)
-    #print ('The convergence is', convergence)
+    print('the iterations are', p_vector)
     #3.2 exercise 
     [pa_vector] = aitken(p_vector)
     print('The aitken method vector is', pa_vector)
@@ -49,11 +45,11 @@ def fixedpt(f,x0,tol,Nmax):
     ''' Nmax = max number of iterations'''
     ''' tol = stopping tolerance'''
 
-    p_vector = np.zeros((Nmax, 1))
+    p_vector = []
     count = 0
     while (count < Nmax):
         x1 = f(x0)
-        p_vector[count]= x1
+        p_vector.append(x1)
         count = count + 1
         if (abs(x1-x0) <tol):
             xstar = x1
@@ -80,22 +76,20 @@ def ooc(p, p_vector):
     
     return[n]
 
-#prelab 4 : 3.1 Aitken's technique
+#lab 4 : 3.1 Aitken's technique
 def aitken(p_vector):
     
     pa_vector = []
-    n = 3
-    k = 1
+    n = 1
 
-    while n in range(len(p_vector)):
-        if ((n) > len(p_vector)):
-            return[pa_vector]
-        else:
-            numerator = (p_vector[n-1] - p_vector[n-2])**2
-            denominator = p_vector[n] - 2*p_vector[n-1] + p_vector[n-2]
-            pa_vector.append(p_vector[n-2] - numerator/denominator)
+    while n < (len(p_vector) - 2):     
+        numerator = (p_vector[n+1] - p_vector[n])**2
+        denominator = p_vector[n+2] - 2*p_vector[n+1] + p_vector[n]
+        pa_vector.append(p_vector[n] - numerator/denominator)
+        n = n + 1
 
-    
     return[pa_vector]
+
+
 
 driver()
