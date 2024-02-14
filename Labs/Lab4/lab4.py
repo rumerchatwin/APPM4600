@@ -21,8 +21,7 @@ def driver():
     print('Error message reads:',ier)
     #print('the iterations are', p_vector)
     #3.2 exercise 
-    [count, pa_vector] = aitken(p_vector)
-    print('Number in array', count)
+    [pa_vector] = aitken(p_vector)
     print('The aitken method vector is', pa_vector)
 
 
@@ -39,8 +38,7 @@ def driver():
     #[convergence] = ooc(f2(xstar), p_vector)
     #print ('The convergence is', convergence)
     #3.2 exercise 
-    [count, pa_vector] = aitken(p_vector)
-    print('Number in array', count)
+    [pa_vector] = aitken(p_vector)
     print('The aitken method vector is', pa_vector)
 
 
@@ -87,12 +85,13 @@ def aitken(p_vector):
     
     pa_vector = [np.zeros((len(p_vector), 1))]
     n = 1
-    count = 0
 
     while n in range(len(p_vector)):
-        if ((n+2) < len(p_vector)):
-            pa_vector[n] = p_vector[n] - ((p_vector[n+1] -p_vector[n])**2 / (p_vector[n+1] - 2*p_vector[n+1] + p_vector[n]) )  
+        if ((n+2) > len(p_vector)):
+            break
+        else:
+            pa_vector[n-1] = p_vector[n] - ((p_vector[n+1] -p_vector[n])**2 / (p_vector[n+1] - 2*p_vector[n+1] + p_vector[n]) )  
     
-    return[count, pa_vector]
+    return[pa_vector]
 
 driver()
