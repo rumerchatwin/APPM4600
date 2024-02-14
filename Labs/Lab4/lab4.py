@@ -90,6 +90,36 @@ def aitken(p_vector):
 
     return[pa_vector]
 
+#lab 4: 3.2 Excercise (Steffansons Method)
+def steff(p0,g,tol,Nmax):
+    
+    a = p0
+    p_vector = []
+    n = 0
 
+    while n < Nmax:
+        b = g(a)
+        c = g(b)
+        p_vector.append(a - ((b-a)**2)/(c -2*b + a))
+        if (abs(c-b) < tol):
+            p = b
+            ier = 0
+            return [p , ier, p_vector]
+        n = n + 1
+        a = b
+    p = b
+    ier = 1
+    return[p, ier, p_vector]
 
 driver()
+
+# for lab4 question 2 in 3.4
+Nmax = 100
+g = lambda x: (10/(x+4))**1/2
+p0 = 1.5
+tol = 10**-10
+
+[p, ier, p_vector] = steff(p0, g, tol, Nmax)
+print('The value p is', p)
+print('The error reads', ier)
+print('The p vetcor is', p_vector)
