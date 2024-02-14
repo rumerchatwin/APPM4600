@@ -19,7 +19,7 @@ def driver():
     print('the approximate fixed point is:',xstar)
     print('f1(xstar):',f1(xstar))
     print('Error message reads:',ier)
-    #print('the iterations are', p_vector)
+    print('the iterations are', p_vector)
     #3.2 exercise 
     [pa_vector] = aitken(p_vector)
     print('The aitken method vector is', pa_vector)
@@ -83,14 +83,18 @@ def ooc(p, p_vector):
 #prelab 4 : 3.1 Aitken's technique
 def aitken(p_vector):
     
-    pa_vector = [np.zeros((len(p_vector), 1))]
-    n = 1
+    pa_vector = []
+    n = 3
+    k = 1
 
     while n in range(len(p_vector)):
-        if ((n+2) > len(p_vector)):
-            break
+        if ((n) > len(p_vector)):
+            return[pa_vector]
         else:
-            pa_vector[n-1] = p_vector[n] - ((p_vector[n+1] -p_vector[n])**2 / (p_vector[n+1] - 2*p_vector[n+1] + p_vector[n]) )  
+            numerator = (p_vector[n-1] - p_vector[n-2])**2
+            denominator = p_vector[n] - 2*p_vector[n-1] + p_vector[n-2]
+            pa_vector.append(p_vector[n-2] - numerator/denominator)
+
     
     return[pa_vector]
 
