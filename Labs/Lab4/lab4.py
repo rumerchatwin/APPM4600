@@ -111,11 +111,11 @@ def steff(p0,g,tol,Nmax):
     ier = 1
     return[p, ier, p_vector]
 
-driver()
+#driver()
 
 # for lab4 question 2 in 3.4
 Nmax = 100
-g = lambda x: (10/(x+4))**1/2
+g = lambda x: (10/(x+4))**0.5
 p0 = 1.5
 tol = 10**-10
 
