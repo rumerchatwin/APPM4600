@@ -19,7 +19,39 @@ def driver():
     #print('f(astar) =', f(astar))
     #print('The iterations is', count)
 
+# Homework #3 question 2
+def question2():
+  f = lambda x: (x-5)**9
+  a = 4.82
+  b = 5.2
+  tol = 1E-4
 
+  [astar,ier, count] = bisection(f,a,b,tol)
+  print('the approximate root is',astar)
+  print('the error message reads:',ier)
+  print('f(astar) =', f(astar))
+  print('The iterations is', count)
+
+  f_expanded = lambda x: x**9 -45*x**8 + 900*x**7 - 10500*x**6 + 78750*x**5 - 393750*x**4 + 1312500*x**3 - 2812500*x**2 + 3515625*x - 1953125
+
+  [astar,ier,count] = bisection(f_expanded,a,b,tol)
+  print('the approximate root of the exapnded function is',astar)
+  print('the error message of the exapnded function reads:',ier)
+  print('f(astar) of the exapnded function =', f(astar))
+  print('The iterations of the exapnded function is', count)
+
+# Question #3
+def question3():
+   f = lambda x: x**3 +x -4
+   a = 1
+   b = 4
+   tol = 10**-3
+   
+   [astar,ier, count] = bisection(f,a,b,tol)
+   print('the approximate root is',astar)
+   print('the error message reads:',ier)
+   print('f(astar) =', f(astar))
+   print('The iterations is', count)
 
 
 # define routines
@@ -77,26 +109,7 @@ def bisection(f,a,b,tol):
     return [astar, ier,count]
       
 driver()               
-
-# Homework #3 question 
-f = lambda x: (x-5)**9
-a = 4.82
-b = 5.2
-tol = 1E-4
-
-[astar,ier, count] = bisection(f,a,b,tol)
-print('the approximate root is',astar)
-print('the error message reads:',ier)
-print('f(astar) =', f(astar))
-print('The iterations is', count)
-
-f_expanded = lambda x: x**9 -45*x**8 + 900*x**7 - 10500*x**6 + 78750*x**5 - 393750*x**4 + 1312500*x**3 - 2812500*x**2 + 3515625*x - 1953125
-
-[astar,ier,count] = bisection(f_expanded,a,b,tol)
-print('the approximate root of the exapnded function is',astar)
-print('the error message of the exapnded function reads:',ier)
-print('f(astar) of the exapnded function =', f(astar))
-print('The iterations of the exapnded function is', count)
+question2()
 
 
 
