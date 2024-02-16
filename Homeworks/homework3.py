@@ -62,7 +62,7 @@ def bisection(f,a,b,tol):
       if (fd ==0):
         astar = d
         ier = 0
-        return [astar, ier]
+        return [astar, ier,count]
       if (fa*fd<0):
          b = d
       else: 
@@ -90,9 +90,9 @@ print('the error message reads:',ier)
 print('f(astar) =', f(astar))
 print('The iterations is', count)
 
-f_expanded = lambda x: x**9 - (18*x**8) + (144*x**7) - (672*x**6) + (2016*x**5) - (4032*x**4) + (5376*x**3) - (4608*x**2) + (2304*x) - 512
+f_expanded = lambda x: x**9 -45*x**8 + 900*x**7 - 10500*x**6 + 78750*x**5 - 393750*x**4 + 1312500*x**3 - 2812500*x**2 + 3515625*x - 1953125
 
-[astar,ier, count] = bisection(f_expanded,a,b,tol)
+[astar,ier,count] = bisection(f_expanded,a,b,tol)
 print('the approximate root of the exapnded function is',astar)
 print('the error message of the exapnded function reads:',ier)
 print('f(astar) of the exapnded function =', f(astar))
