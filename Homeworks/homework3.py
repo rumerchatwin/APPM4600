@@ -1,55 +1,81 @@
-# APPM 4600
-# Rumer Chatwin
-import numpy as np 
-import matplotlib.pyplot as plt
+import numpy as np
 
-# Question a
-# creating a vector t at 0 to pi with increments of pi/30
-t = np.arange(0, np.pi, np.pi/30)
-# create a vector for y
-y1 = np.cos(t)
+def driver():
+  
+# use routines    
+    f = lambda x: 2*x - np.sin(x) - 1
+    a = 0
+    b = 1
 
-N = len(t)
-k = 1
+#    f = lambda x: np.sin(x)
+#    a = 0.1
+#    b = np.pi+0.1
 
-for k in range(N):
-    S = t[k] * y1[k]
-    k = k + 1
-print('the sum is', S)
+    tol = 1e-9
 
-# Question b
-# Create variables for first plot
-theta = np.linspace(0, 2*np.pi, num = 100000)
-R = 1.2
-Sr = 0.1
-f = 15
-p = 0
-
-x = R * np.cos(theta) * (1 + Sr * np.sin(f * theta + p)) 
-y = R * np.sin(theta) * (1 + Sr * np.sin(f * theta + p)) 
-#create plots
-plt.figure(1)
-plt.plot(x,y)
-plt.xlim(-1.5, 1.5)
-plt.ylim(-1.5, 1.5)
-plt.show()
-
-
-#create varibles for plot 2
-Sr2 = 0.05
-p2 = np.random.uniform(0, 2)
-
-plt.figure(2)
-for i in range(10):
-    R2 = i
-    f = 2 + i
-    x2 = R2 * np.cos(theta) * (1 + Sr2 * np.sin(f * theta + p2)) 
-    y2 = R2 * np.sin(theta) * (1 + Sr2 * np.sin(f * theta + p2))
-    plt.plot(x2, y2)
-    i = i + 1
-plt.xlim(-10,10)
-plt.ylim(-10,10)
-plt.show()
+    [astar,ier, count] = bisection(f,a,b,tol)
+    print('the approximate root is',astar)
+    print('the error message reads:',ier)
+    print('f(astar) =', f(astar))
+    print('The iterations is', count)
 
 
 
+
+# define routines
+def bisection(f,a,b,tol):
+    
+#    Inputs:
+#     f,a,b       - function and endpoints of initial interval
+#      tol  - bisection stops when interval length < tol
+
+#    Returns:
+#      astar - approximation of root
+#      ier   - error message
+#            - ier = 1 => Failed
+#            - ier = 0 == success
+
+#     first verify there is a root we can find in the interval 
+
+    fa = f(a)
+    fb = f(b)
+    count = 0
+    if (fa*fb>0):
+       ier = 1
+       astar = a
+       return [astar, ier,count]
+
+#   verify end points are not a root 
+    if (fa == 0):
+      astar = a
+      ier =0
+      return [astar, ier, count]
+
+    if (fb ==0):
+      astar = b
+      ier = 0
+      return [astar, ier, count]
+
+    d = 0.5*(a+b)
+    while (abs(d-a)> tol):
+      fd = f(d)
+      if (fd ==0):
+        astar = d
+        ier = 0
+        return [astar, ier]
+      if (fa*fd<0):
+         b = d
+      else: 
+        a = d
+        fa = fd
+      d = 0.5*(a+b)
+      count = count +1
+#      print('abs(d-a) = ', abs(d-a))
+      
+    astar = d
+    ier = 0
+    return [astar, ier,count]
+      
+driver()               
+
+# Homework #3 question 
