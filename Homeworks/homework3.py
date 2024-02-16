@@ -14,10 +14,10 @@ def driver():
     tol = 1e-9
 
     [astar,ier, count] = bisection(f,a,b,tol)
-    print('the approximate root is',astar)
-    print('the error message reads:',ier)
-    print('f(astar) =', f(astar))
-    print('The iterations is', count)
+    #print('the approximate root is',astar)
+    #print('the error message reads:',ier)
+    #print('f(astar) =', f(astar))
+    #print('The iterations is', count)
 
 
 
@@ -79,3 +79,24 @@ def bisection(f,a,b,tol):
 driver()               
 
 # Homework #3 question 
+f = lambda x: (x-5)**9
+a = 4.82
+b = 5.2
+tol = 1E-4
+
+[astar,ier, count] = bisection(f,a,b,tol)
+print('the approximate root is',astar)
+print('the error message reads:',ier)
+print('f(astar) =', f(astar))
+print('The iterations is', count)
+
+f_expanded = lambda x: x**9 - (18*x**8) + (144*x**7) - (672*x**6) + (2016*x**5) - (4032*x**4) + (5376*x**3) - (4608*x**2) + (2304*x) - 512
+
+[astar,ier, count] = bisection(f_expanded,a,b,tol)
+print('the approximate root of the exapnded function is',astar)
+print('the error message of the exapnded function reads:',ier)
+print('f(astar) of the exapnded function =', f(astar))
+print('The iterations of the exapnded function is', count)
+
+
+
