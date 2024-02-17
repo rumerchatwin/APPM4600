@@ -56,24 +56,57 @@ def question3():
 
 #Question 5
 def question5a():
-   x = np.linspace(0, 10, 50)
+   x = np.linspace(-10, 10, 100)
    f =  x - 4 * np.sin(2*x) - 3
    plt.figure(1)
    plt.plot(x, f)
    plt.axhline(y=0, color = 'black')
+   plt.axvline(x=0, color = 'black')
+   plt.xlim(-2,8)
    plt.show()
 
 #Question 5b
 def question5b():
-   f = lambda x: x - 4 * np.sin(2*x) - 3
+   f = lambda x: - np.sin(2*x) + ((5 * x) / 4) - (3/4)
    Nmax = 100
-   x0 = 0
-   tol = 0.5 * 10**-10
-   [xstar, ier, count] = fixedpt(f, x0, tol, Nmax)
-   print('The approximated fixed point is', xstar)
-   print('The error is', ier)
-   print('The number of iterations is', count)
+   x0 = -1
+   tol = 10**-11
+   [xstar, ier] = fixedpoint(f, x0, tol, Nmax)
+   print('The approximated fixed point (1) is', xstar)
+   print('The error (1) is', ier)
+   x02 = -0.5
+   [xstar2, ier2] = fixedpoint(f, x02, tol, Nmax)
+   print('The approximated fixed point (2) is', xstar2)
+   print('The error (2) is', ier2)
+   x03 = 1.75
+   [xstar3, ier3] = fixedpoint(f, x03, tol, Nmax)
+   print('The approximated fixed point (3) is', xstar3)
+   print('The error is', ier3)
+   x04 = 3
+   [xstar4, ier4] = fixedpoint(f, x04, tol, Nmax)
+   print('The approximated fixed point (4) is', xstar4)
+   print('The error is', ier4)
+   x05 = 4.5
+   [xstar5, ier5] = fixedpoint(f, x05, tol, Nmax)
+   print('The approximated fixed point (5) is', xstar5)
+   print('The error is', ier5)
   
+def fixedpoint(f, x0, tol, nmax):
+  count = 0
+  while (count < nmax):
+        x1 = f(x0)
+        count = count + 1
+        if (abs(x1-x0) <tol):
+            xstar = x1
+            ier = 0
+            return [xstar,ier]
+        x0 = x1
+
+  xstar = x1
+  ier = 1
+  return [xstar, ier]
+
+
 
 
 # define routines
@@ -125,36 +158,15 @@ def bisection(f,a,b,tol):
       d = 0.5*(a+b)
       count = count +1
 #      print('abs(d-a) = ', abs(d-a))
+      astar = d
+      ier = 0
+      return [astar, ier,count]
       
-#Code for the fixed point iteration
-def fixedpt(f,x0,tol,Nmax):
 
-    ''' x0 = initial guess''' 
-    ''' Nmax = max number of iterations'''
-    ''' tol = stopping tolerance'''
-    count = 0
-    while (count < Nmax):
-        x1 = f(x0)
-        count = count + 1
-        if (abs(x1-x0) <tol):
-            xstar = x1
-            ier = 0
-            return [xstar,ier,count]
-        x0 = x1
-
-    xstar = x1
-    ier = 1
-    return [xstar, ier,count]
-
-
-    astar = d
-    ier = 0
-    return [astar, ier,count]
-      
 #driver()               
 #question2()
 #question3()
-#question5a()
-#question5b()
+question5a()
+question5b()
 
 
