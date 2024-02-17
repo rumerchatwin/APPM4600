@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 def driver():
   
@@ -53,6 +54,27 @@ def question3():
    print('f(astar) =', f(astar))
    print('The iterations is', count)
 
+#Question 5
+def question5a():
+   x = np.linspace(0, 10, 50)
+   f =  x - 4 * np.sin(2*x) - 3
+   plt.figure(1)
+   plt.plot(x, f)
+   plt.axhline(y=0, color = 'black')
+   plt.show()
+
+#Question 5b
+def question5b():
+   f = lambda x: x - 4 * np.sin(2*x) - 3
+   Nmax = 100
+   x0 = 0
+   tol = 0.5 * 10**-10
+   [xstar, ier, count] = fixedpt(f, x0, tol, Nmax)
+   print('The approximated fixed point is', xstar)
+   print('The error is', ier)
+   print('The number of iterations is', count)
+  
+
 
 # define routines
 def bisection(f,a,b,tol):
@@ -104,12 +126,35 @@ def bisection(f,a,b,tol):
       count = count +1
 #      print('abs(d-a) = ', abs(d-a))
       
+#Code for the fixed point iteration
+def fixedpt(f,x0,tol,Nmax):
+
+    ''' x0 = initial guess''' 
+    ''' Nmax = max number of iterations'''
+    ''' tol = stopping tolerance'''
+    count = 0
+    while (count < Nmax):
+        x1 = f(x0)
+        count = count + 1
+        if (abs(x1-x0) <tol):
+            xstar = x1
+            ier = 0
+            return [xstar,ier,count]
+        x0 = x1
+
+    xstar = x1
+    ier = 1
+    return [xstar, ier,count]
+
+
     astar = d
     ier = 0
     return [astar, ier,count]
       
-driver()               
-question2()
-
+#driver()               
+#question2()
+#question3()
+#question5a()
+#question5b()
 
 
