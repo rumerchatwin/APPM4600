@@ -1,6 +1,18 @@
 # import libraries
 import numpy as np
 
+def question1():
+  a = 2
+  b = 4.5
+  tol = 10E-10
+  nmax = 100
+  f = lambda x: np.exp(x**2 + 7*x -30) - 1
+
+  [xstar, ier] = bisection(f, a,b,tol,nmax)
+  print('The root from bisection method is', )
+  print('The error given is', ier)
+
+
 def bisection(f,a,b,tol,Nmax):
     '''     first verify there is a root we can find in the interval '''
     fa = f(a)
@@ -155,7 +167,7 @@ def bisection_Newton(f,fp,fp2,a,b,tol,Nmax):
           ier = 1
           return [pstar,ier,count]
 
-
+question1()
 
 
 
