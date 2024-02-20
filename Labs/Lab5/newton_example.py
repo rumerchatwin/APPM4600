@@ -1,6 +1,7 @@
 # import libraries
 import numpy as np
 
+# defining functions for the questions in lab
 def question1():
   a = 2
   b = 4.5
@@ -21,9 +22,8 @@ def question2():
   x0 = 4.5
   f = lambda x: np.exp(x**2 + 7*x -30) - 1
   fp = lambda x: (2*x +7) * np.exp(x**2 + 7*x -30) - 1
-  fp2 = lambda x: (2 * np.exp(x**2 + 7*x -30) - 1) + (2*x +7)**2 * np.exp(x**2 + 7*x -30) - 1
 
-  [pstar, ier, count] = newton(f, fp, fp2, x0, tol, nmax)
+  [pstar, ier, count] = newton(f, fp, x0, tol, nmax)
   print('The root from Newton Method is', pstar)
   print('The error is', ier)
   print('The number of iterations is', count)
@@ -37,7 +37,12 @@ def question3():
   f = lambda x: np.exp(x**2 + 7*x -30) - 1
   fp = lambda x: (2*x +7) * np.exp(x**2 + 7*x -30) - 1
   fp2 = lambda x: (2 * np.exp(x**2 + 7*x -30) - 1) + (2*x +7)**2 * np.exp(x**2 + 7*x -30) - 1
+  [pstar, ier, count] = hybrid(f, fp, fp2, a,b,tol,nmax)
+  print('The root for the combined method is', pstar)
+  print('The error is', ier)
+  print('The number of iterations is', count)
 
+# define the bisection method
 def bisection(f,a,b,tol,Nmax):
     '''     first verify there is a root we can find in the interval '''
     fa = f(a)
@@ -90,111 +95,151 @@ def bisection(f,a,b,tol,Nmax):
     ier = 2
     return [astar,ier, count]
 
-
-# define routines
-def newton(f, fp, fp2, p0,tol,Nmax):
-  p = np.zeros(Nmax+1)
-  p[0] = p0
-  for it in range(Nmax):
-      p1 = p0-f(p0) / fp(p0)
-      p[it+1] = p1
-      g = ( f(p1)*fp2(p1) ) / (fp(p1))**2
-      if (g > 1):
-          info = 1
-          pstar = p1
-          return[pstar, info, it]
-      else:
-        if (abs(p1-p0) < tol):
-          pstar = p1
-          info = 0
-          return [pstar,info,it]
-      p0 = p1
-
-  pstar = p1
-  info = 1
-  return [p,pstar,info,it]
-
-        
-def bisection_Newton(f,fp,fp2,a,b,tol,Nmax):
-    #Error codes
+#define the hybrid bisection method
+def bisection_update(f,fp, fp2,a,b,tol,Nmax):
     fa = f(a)
     fb = f(b)
-    if (fa*fb > 0):
+    count = 0
+    if (fa*fb>0):
        ier = 1
        astar = a
-    elif (fa == 0):
+       return [astar, ier, count]
+    if (fa == 0):
       astar = a
       ier =0
-    elif (fb == 0):
+      return [astar, ier, count]
+    if (fb ==0):
       astar = b
       ier = 0
-  
-    if (ier == 1):
-      pstar = astar
-      count = 0
-      return[pstar, ier, count]
-    
-    else:
-      #begin bisection method
-      count = 0
-      while (count < Nmax):
-        c = 0.5*(a+b)
-        fc = f(c)
+      return [astar, ier, count]
 
+    while (count < Nmax):
+      c = 0.5*(a+b)
+      fc = f(c)
+      #doing the netwon implication first: 
+      g = (f(c) * fp2(c)) / (fp(c))**2
+      # Now check if g is less than 1
+      if (g < 1):
+        astar = c
+        ier = 0
+        return[astar, ier, count]
+      else:
         if (fc ==0):
           astar = c
           ier = 0
+          return [astar, ier, count]
 
         if (fa*fc<0):
           b = c
-
         elif (fb*fc<0):
           a = c
           fa = fc
-
         else:
           astar = c
           ier = 3
+          return [astar, ier, count]
 
         if (abs(b-a)<tol):
           astar = a
           ier =0
-        count = count +1
-      
-      # if the error is not zero, it did not work, so return 
-      if (ier != 0):
-        pstar = astar
-        return[pstar, ier, count]
-      
-      #begin the newton method
-      else:
-        midpoint = astar
-        g = ( f(midpoint)*fp2(midpoint) ) / (fp(midpoint))**2
-
-        if (g > 1):
-          ier = 1
-          pstar = midpoint
-          return[pstar,ier,count]
+          return [astar, ier, count]
         
-        else:
-          p = np.zeros(Nmax+1)
-          p[0] = midpoint
-          count = 0
-          for count in range(Nmax):
-              p1 = midpoint - f(midpoint) / fp(midpoint)
-              p[count+1] = p1
-              if (abs(p1-p0) < tol):
-                pstar = p1
-                ier = 0
-                return [pstar,ier,count]
-              p0 = p1
+        count = count +1
 
+    astar = a
+    ier = 2
+    return [astar,ier, count]
+
+def newton(f, fp,p0,tol,Nmax):
+  p = np.zeros(Nmax+1)
+  p[0] = p0
+  for it in range(Nmax):
+      p1 = p0-f(p0)/fp(p0)
+      p[it+1] = p1
+      if (abs(p1-p0) < tol):
           pstar = p1
-          ier = 1
-          return [pstar,ier,count]
+          info = 0
+          return [pstar,info,it]
+      p0 = p1
+  pstar = p1
+  info = 1
+  return [pstar,info,it]
+
+        
+def hybrid(f,fp,fp2,a,b,tol,Nmax):
+    #RETURNS: pstar, ier, count
+    #Check for when there will be an error first
+    count = 0
+    fa = f(a)
+    fb = f(b)
+    count = 0
+    if (fa*fb>0):
+       ier = 1
+       pstar = a
+       return [pstar, ier, count]
+    if (fa == 0):
+      pstar = a
+      ier =0
+      return [pstar, ier, count]
+    if (fb ==0):
+      pstar = b
+      ier = 0
+      return [pstar, ier, count]
+    
+    ###############################################
+    # Now we have made sure that the bisection method can be started, we want to use the basin of convergence.
+    # When the value is in the basin of convergence, we want the bisection method to end. 
+    # We set that value equal to the midpoint and then use the Newton method to then find the root for the most accuarcy.
+    
+    while (count < Nmax):
+      c = 0.5*(a+b)
+      fc = f(c)
+      # checks to see if the first half is the midpoint
+      # if this is the case, it is a perfect scenario where it will take zero iterations
+      #so Newton method is not involved here
+      if (fc == 0):
+        pstar = c
+        ier = 0
+        return[pstar, ier, count]
+      # We want to find if the midpoint is in the basin of convergence, so define g
+      g = (f(c) * fp2(c)) / (fp(c))**2
+      # Now check if g is less than 1
+      if (g < 1):
+        midpoint = c
+        [pstar, ier, newton_portion] = newton(f, fp, midpoint, tol, Nmax)
+        count = count + newton_portion
+        return[pstar, ier, count]
+      else:
+        #check for error
+        if (fa*fc<0):
+          b = c
+        elif (fb*fc<0):
+          a = c
+          fa = fc
+        else:
+          pstar = c
+          ier = 3
+          return [pstar, ier, count]
+
+        if (abs(b-a)<tol):
+          pstar = a
+          ier =0
+          return [pstar, ier, count]        
+        count = count +1
+
+    astar = a
+    ier = 2
+    return [pstar,ier, count]
+
+#The codes for question 6 using different methods 
+# question 1 : the bisection method
+# question 2 : the newton method
+# question 3 : hybrid method
 
 question1()
 question2()
+question3()
+
 
 
 
