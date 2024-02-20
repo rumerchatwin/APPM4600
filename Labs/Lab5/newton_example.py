@@ -62,9 +62,9 @@ def newton(f, fp, fp2, p0,tol,Nmax):
       p[it+1] = p1
       g = ( f(p1)*fp2(p1) ) / (fp(p1))**2
       if (g > 1):
-          ier = 1
+          info = 1
           pstar = p1
-          return[pstar, ier, it]
+          return[pstar, info, it]
       else:
         if (abs(p1-p0) < tol):
           pstar = p1
@@ -75,6 +75,7 @@ def newton(f, fp, fp2, p0,tol,Nmax):
   pstar = p1
   info = 1
   return [p,pstar,info,it]
+
         
 def bisection_Newton(f,fp,fp2,a,b,tol,Nmax):
     #Error codes
@@ -83,47 +84,79 @@ def bisection_Newton(f,fp,fp2,a,b,tol,Nmax):
     if (fa*fb > 0):
        ier = 1
        astar = a
-       #return [astar, ier]
-    if (fa == 0):
+    elif (fa == 0):
       astar = a
       ier =0
-      #return [astar, ier]
-
-    if (fb == 0):
+    elif (fb == 0):
       astar = b
       ier = 0
-      #return [astar, ier]
+  
+    if (ier == 1):
+      pstar = astar
+      count = 0
+      return[pstar, ier, count]
     
-    #begin bisection method
-    count = 0
-    while (count < Nmax):
-      c = 0.5*(a+b)
-      fc = f(c)
+    else:
+      #begin bisection method
+      count = 0
+      while (count < Nmax):
+        c = 0.5*(a+b)
+        fc = f(c)
 
-      if (fc ==0):
-        astar = c
-        ier = 0
-        #return [astar, ier]
+        if (fc ==0):
+          astar = c
+          ier = 0
 
-      if (fa*fc<0):
-         b = c
-      elif (fb*fc<0):
-        a = c
-        fa = fc
-      else:
-        astar = c
-        ier = 3
-        #return [astar, ier]
+        if (fa*fc<0):
+          b = c
 
-      if (abs(b-a)<tol):
-        astar = a
-        ier =0
-        #return [astar, ier]
+        elif (fb*fc<0):
+          a = c
+          fa = fc
+
+        else:
+          astar = c
+          ier = 3
+
+        if (abs(b-a)<tol):
+          astar = a
+          ier =0
+        count = count +1
       
-      count = count +1
+      # if the error is not zero, it did not work, so return 
+      if (ier != 0):
+        pstar = astar
+        return[pstar, ier, count]
+      
+      #begin the newton method
+      else:
+        midpoint = astar
+        g = ( f(midpoint)*fp2(midpoint) ) / (fp(midpoint))**2
 
-    midpoint = astar
+        if (g > 1):
+          ier = 1
+          pstar = midpoint
+          return[pstar,ier,count]
+        
+        else:
+          p = np.zeros(Nmax+1)
+          p[0] = midpoint
+          count = 0
+          for count in range(Nmax):
+              p1 = midpoint - f(midpoint) / fp(midpoint)
+              p[count+1] = p1
+              if (abs(p1-p0) < tol):
+                pstar = p1
+                ier = 0
+                return [pstar,ier,count]
+              p0 = p1
 
-    
+          pstar = p1
+          ier = 1
+          return [pstar,ier,count]
+
+
+
+
 
 
