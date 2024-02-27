@@ -14,7 +14,7 @@ def foward(f, h, x0):
     derivative = (f(x0 + h) - f(x0)) / h
     return[derivative]
 def centered(f, h, x0):
-    derivative = (f(x0 + h) - f(x0 - h))/ (2 * h)
+    derivative = (f(x0 + h) - f(x0 - h)) / (2 * h)
     return[derivative]
 
 driver()
