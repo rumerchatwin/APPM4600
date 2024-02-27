@@ -1,40 +1,20 @@
 import numpy as np
 
-#prelab 6
-#define the foward difference
-def foward_difference(f, x, h):
-    count = 1
-    vector = []
-    while (count <= len(h)):
-        f_prime = (f(x + h[count]) - f(x)) / (h[count])
-        vector.append(f_prime)
-        count =+ 1
-    
-    last = f_prime
-    return [vector]
+def driver():
+    f = lambda x: np.cos(x)
+    x0 = np.pi/2
+    h = (0.01 * 2) ** (-np.arange(0,10))
 
-def centered_difference(f, x, h):
-    count = 1
-    vector = []
-    
-    while (count <= len(h) ):
-        f_prime = (f(x + h[count]) - f(x - h[count])) / 2 * h[count]
-        vector.append(f_prime)
-        count =+ 1
+    [foward_derivative] = foward(f, h, x0)
+    [centered_derivative] = centered(f,h,x0)
+    print('The foward difference appis', foward_derivative)
+    print('The centered difference approximation is', centered_derivative)
 
-    last = f_prime
-    return[vector, last]
-        
+def foward(f, h, x0):
+    derivative = (f(x0 + h) - f(x0)) / h
+    return[derivative]
+def centered(f, h, x0):
+    derivative = (f(x0 + h) - f(x0 - h))/ 2 * h
+    return[derivative]
 
-f = lambda x: np.cos(x)
-h = - np.arange(0, 10) * 2 
-    
-x0 = np.pi/2
-
-[f_vector, final] = foward_difference(f, x0, h)
-print('The vector is', f_vector)
-print('The derivative is', final)
-
-[c_vector, c_final] = centered_difference(f, x0, h)
-print('The vector is', c_vector)
-print('The derivative is', c_final)
+driver()
