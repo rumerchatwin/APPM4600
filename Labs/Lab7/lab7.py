@@ -8,9 +8,11 @@ import matplotlib.pyplot as plt
 
 def driver():
     f = lambda x: 1/(1+(10*x)**2)
-    N = 3
+    N = 20
     a = -1
     b = 1
+
+    g = lambda x: np.sin(5*x)
    
     ''' create equispaced interpolation nodes'''
     xint = np.linspace(a,b,N+1)
@@ -23,6 +25,7 @@ def driver():
     xeval = np.linspace(a,b,Neval+1)
     yeval_l= np.zeros(Neval+1)
     yeval_dd = np.zeros(Neval+1)
+    yeval_mono = np.zeros(Neval+1)
   
     '''Initialize and populate the first columns of the 
      divided difference matrix. We will pass the x vector'''
@@ -36,26 +39,30 @@ def driver():
     for kk in range(Neval+1):
        yeval_l[kk] = eval_lagrange(xeval[kk],xint,yint,N)
        yeval_dd[kk] = evalDDpoly(xeval[kk],xint,y,N)
+
+    a = monomial(xint, yint, len(xint))
+
+    for i in range(N+1):
+       yeval_mono = yeval_mono + a[i]*xeval**i
+
     ''' create vector with exact values'''
     fex = f(xeval)
 
-    a = monomial(xint, yint, len(xint))
-    print(a)
-    yeval_mono = 0
-    for i in range(N+1):
-       yeval_mono = yeval_mono + a[i]*(xint)**i
-
+# Plot the methods
     plt.figure(1)    
-    plt.plot(xeval,fex,'ro-')
-    plt.plot(xeval,yeval_l,'bs--') 
-    plt.plot(xeval,yeval_dd,'c.--')
-    #plt.plot(xeval, yeval_mono)
+    plt.plot(xeval,fex,'ro-', label = 'function')
+    plt.plot(xeval,yeval_l,'bs--', label = 'lagrange') 
+    plt.plot(xeval,yeval_dd,'c.--', label = 'Newton DD')
+    plt.plot(xeval, yeval_mono, color = 'black', label = 'monomial')
     plt.legend()
+# Plot the errors
     plt.figure(2) 
     err_l = abs(yeval_l-fex)
     err_dd = abs(yeval_dd-fex)
+    err_mono = abs(yeval_mono-fex)
     plt.semilogy(xeval,err_l,'ro--',label='lagrange')
     plt.semilogy(xeval,err_dd,'bs--',label='Newton DD')
+    plt.semilogy(xeval, err_mono, color = 'black', label = 'monomial')
     plt.legend()
     plt.show()
 
@@ -101,16 +108,19 @@ def evalDDpoly(xval, xint,y,N):
     return yeval
 
 ''' Monomial Expansion'''
-def monomial(xint, yint, N):
+def monomial(x, y, N):
+   
    V = np.zeros( (N, N) )
+
    for i in range(N):
       for j in range(N):
-         V[i][j] = ( xint[i] ** j )
+         V[i][j] = x[i] ** j 
 
    Vinv = inv(V)
 
-   a_vector  = np.dot(Vinv, yint)
-   return[a_vector]
+   a_vector  = np.dot(Vinv, y)
+
+   return(a_vector)
    
 
 
