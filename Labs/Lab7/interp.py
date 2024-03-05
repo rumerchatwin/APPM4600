@@ -27,7 +27,7 @@ def driver():
     y = np.zeros( (N+1, N+1) )
      
     for j in range(N+1):
-       y[j][0]  = yint[j]
+       y[j][0]  = yint[j] 
 
     y = dividedDiffTable(xint, y, N+1)
     ''' evaluate lagrange poly '''
