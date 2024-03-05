@@ -66,6 +66,70 @@ def driver():
     plt.legend()
     plt.show()
 
+def excercise2():
+   f = lambda x: np.sinc(5*x)
+   N = 10
+   a = -1
+   b = 1
+
+   g = lambda x: 1/(1+(10*x)**2)
+   
+   ''' create equispaced interpolation nodes'''
+   xint = np.zeros(N+1)
+   for count in range(len(xint)):
+      xint[count] = np.cos(((2*count -1)*np.pi)/ 2*N)
+
+
+   ''' create interpolation data'''
+   yint = f(xint)
+    
+   ''' create points for evaluating the Lagrange interpolating polynomial'''
+   Neval = 1000
+   xeval = np.linspace(a,b,Neval+1)
+   yeval_l= np.zeros(Neval+1)
+   yeval_dd = np.zeros(Neval+1)
+   yeval_mono = np.zeros(Neval+1)
+  
+   '''Initialize and populate the first columns of the 
+     divided difference matrix. We will pass the x vector'''
+   y = np.zeros( (N+1, N+1) )
+     
+   for j in range(N+1):
+       y[j][0]  = yint[j] 
+
+   y = dividedDiffTable(xint, y, N+1)
+   ''' evaluate lagrange poly '''
+   for kk in range(Neval+1):
+       yeval_l[kk] = eval_lagrange(xeval[kk],xint,yint,N)
+       yeval_dd[kk] = evalDDpoly(xeval[kk],xint,y,N)
+
+   a = monomial(xint, yint, len(xint))
+
+   for i in range(N+1):
+       yeval_mono = yeval_mono + a[i]*xeval**i
+
+   ''' create vector with exact values'''
+   fex = f(xeval)
+
+# Plot the methods
+   plt.figure(1)    
+   plt.plot(xeval,fex,'ro-', label = 'function')
+   plt.plot(xeval,yeval_l,'bs--', label = 'lagrange') 
+   plt.plot(xeval,yeval_dd,'c.--', label = 'Newton DD')
+   plt.plot(xeval, yeval_mono, color = 'black', label = 'monomial')
+   plt.legend()
+# Plot the errors
+   plt.figure(2) 
+   err_l = abs(yeval_l-fex)
+   err_dd = abs(yeval_dd-fex)
+   err_mono = abs(yeval_mono-fex)
+   plt.semilogy(xeval,err_l,'ro--',label='lagrange')
+   plt.semilogy(xeval,err_dd,'bs--',label='Newton DD')
+   plt.semilogy(xeval, err_mono, color = 'black', label = 'monomial')
+   plt.legend()
+   plt.show()
+
+
 
 ''' The Lagrange Code '''
 def eval_lagrange(xeval,xint,yint,N):
@@ -126,7 +190,8 @@ def monomial(x, y, N):
 
 
 ''' Code that runs '''
-driver()        
+#driver()
+excercise2()        
 
 
 
