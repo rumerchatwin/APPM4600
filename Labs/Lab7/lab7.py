@@ -7,8 +7,8 @@ import matplotlib.pyplot as plt
 ''' Main Driver for code (From Example)'''
 
 def driver():
-    f = lambda x: 1/(1+(10*x)**2)
-    N = 20
+    f = lambda x: np.sinc(5*x)
+    N = 10
     a = -1
     b = 1
 
