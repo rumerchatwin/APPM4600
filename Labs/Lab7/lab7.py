@@ -1,9 +1,8 @@
 # Lab 7
 import numpy as np
 import numpy.linalg as la
-import matplotlib.pyplot as plt
 from numpy.linalg import inv 
-from numpy.linalg import norm 
+import matplotlib.pyplot as plt
 
 ''' Main Driver for code (From Example)'''
 
@@ -39,10 +38,18 @@ def driver():
        yeval_dd[kk] = evalDDpoly(xeval[kk],xint,y,N)
     ''' create vector with exact values'''
     fex = f(xeval)
+
+    a = monomial(xint, yint, len(xint))
+    print(a)
+    yeval_mono = 0
+    for i in range(N+1):
+       yeval_mono = yeval_mono + a[i]*(xint)**i
+
     plt.figure(1)    
     plt.plot(xeval,fex,'ro-')
     plt.plot(xeval,yeval_l,'bs--') 
     plt.plot(xeval,yeval_dd,'c.--')
+    #plt.plot(xeval, yeval_mono)
     plt.legend()
     plt.figure(2) 
     err_l = abs(yeval_l-fex)
@@ -51,6 +58,7 @@ def driver():
     plt.semilogy(xeval,err_dd,'bs--',label='Newton DD')
     plt.legend()
     plt.show()
+
 
 ''' The Lagrange Code '''
 def eval_lagrange(xeval,xint,yint,N):
@@ -93,13 +101,10 @@ def evalDDpoly(xval, xint,y,N):
     return yeval
 
 ''' Monomial Expansion'''
-
-def monomial(yint, xint, Neval):
-   row = Neval; column = Neval
-   V = np.zeros((row, column))
-   for i in range(len(row)):
-      xint[i] = -1 + (i-1)
-      for j in range(len(column)):
+def monomial(xint, yint, N):
+   V = np.zeros( (N, N) )
+   for i in range(N):
+      for j in range(N):
          V[i][j] = ( xint[i] ** j )
 
    Vinv = inv(V)
