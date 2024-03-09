@@ -4,7 +4,6 @@ import numpy.linalg as la
 from numpy.linalg import inv 
 from numpy.linalg import norm 
 
-
 def question1a():
     f = lambda x, y: 3*x**2 - y**2
     g = lambda x, y: 3*x*y**2 - x**3 - 1
@@ -35,62 +34,50 @@ def question1a():
     print('The y-values are', answer[1])
 
 # For Question 1c
-def evalJ(xvector): 
-    x = xvector[0]
-    y = xvector[1]
 
-    J = np.array([[6*x , -2*y], [ 3*y**2 - 3*x**2, 6*x*y]])
-
-    return [J]
-
-def evalF(xvector):
-    x = xvector[0]
-    y = xvector[1]
-
-    f = 3*x**2 - y**2
-    g = 3*x*y**2 - x**3 - 1
-    F = np.array([[f], [g]])
+#finding the F array first
+def findF(x, y):
+    row1 = 3*x**2 - y**2
+    row2 = 3*x*y**2 - x**3 - 1
+    F = np.array([[row1],
+                  [row2]])
+    return(F)
+#Finding the Jacobian 
+def findJ(x,y):
+    r1c1 = 6*x
+    r1c2 = -2*y
+    r2c1 = 3*y**2 - 3*x**2
+    r2c2 = 6*x*y 
+    J = np.array([[r1c1, r1c2],
+                  [r2c1, r1c2]])
+    return(J)
+#Defining Newtons method for 2x2 matrix
+def Newton(x, y, tol, nmax):
+    k = 1
+    xvector = np.array([[x],
+                        [y]])
     
-    return [F]
+    while (k <= nmax):
+        xvector = np.array([[x],
+                            [y]])
+        F = findF(x,y)
+        J = findJ(x, y)
+        jinv = inv(J)
 
-def question1c():
-    x0 = 1
-    y0 = 1
-    xvector = np.array([[x0], [y0]])
+        x1 = xvector - jinv.dot(F)
 
-    Nmax = 10
-    tol = 10E-4
-
-    [vector, ier, its] = Newton(xvector, tol, Nmax)
-    print('The Newton method is', vector)
-
-def Newton(xvector, tol, Nmax):
-
-    for its in range(Nmax):
-       J = evalJ(xvector)
-       Jinv = inv(J)
-       F = evalF(xvector)
-       
-       print ('This is J inverse dot F', Jinv.dot(F))
-
-       x1vector = xvector - Jinv.dot(F)
-       
-       if (norm(x1vector - xvector) < tol):
-           xstar = x1vector
-           ier =0
-           return[xstar, ier, its]
-           
-       xvector = x1vector
-       print('This is the new xvector', xvector)
+        if (norm(x1) < tol):
+            xstar = x1
+            ier = 0
+            return[xstar, ier, k]
+        
+        x = x1[0]
+        y = x1[1]
     
-    xstar = x1vector
+    xstar = xvector
     ier = 1
-    return[xstar,ier,its]
-
-
-#question1a()
-question1c()
-
+    return[xstar, ier, k]
+        
 
 
 
