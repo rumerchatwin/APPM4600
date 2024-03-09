@@ -34,6 +34,16 @@ def question1a():
     print('The y-values are', answer[1])
 
 # For Question 1c
+def question1c():
+    x0 = 1
+    y0 = 1
+    N = 20
+    tol = 10E-6
+    print(findF(x0,y0))
+    print(findJ(x0,y0))
+    [xstar, ier, k] = Newton( x0, y0, tol, N)
+    print('The answer is', xstar)
+
 
 #finding the F array first
 def findF(x, y):
@@ -42,6 +52,7 @@ def findF(x, y):
     F = np.array([[row1],
                   [row2]])
     return(F)
+
 #Finding the Jacobian 
 def findJ(x,y):
     r1c1 = 6*x
@@ -51,6 +62,8 @@ def findJ(x,y):
     J = np.array([[r1c1, r1c2],
                   [r2c1, r1c2]])
     return(J)
+
+
 #Defining Newtons method for 2x2 matrix
 def Newton(x, y, tol, nmax):
     k = 1
@@ -73,11 +86,12 @@ def Newton(x, y, tol, nmax):
         
         x = x1[0]
         y = x1[1]
+        k =+ 1
     
     xstar = xvector
     ier = 1
     return[xstar, ier, k]
         
 
-
+question1c()
 
