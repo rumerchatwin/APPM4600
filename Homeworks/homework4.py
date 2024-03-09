@@ -34,61 +34,63 @@ def question1a():
     print('')
     print('The y-values are', answer[1])
 
+# For Question 1c
+def evalJ(xvector): 
+    x = xvector[0]
+    y = xvector[1]
 
-def evalJ(x, y): 
-    J = np.array([[6*x , -2*y], [ 3*y**2 - 3*x**2, 6*x*y]]) 
+    J = np.array([[6*x , -2*y], [ 3*y**2 - 3*x**2, 6*x*y]])
 
     return [J]
-def evalF(x, y):
-    F = np.zeros(2)
-    F[0] = 3*x**2 - y**2
-    F[1] = 3*x*y**2 - x**3 - 1
+
+def evalF(xvector):
+    x = xvector[0]
+    y = xvector[1]
+
+    f = 3*x**2 - y**2
+    g = 3*x*y**2 - x**3 - 1
+    F = np.array([[f], [g]])
+    
     return [F]
 
 def question1c():
     x0 = 1
     y0 = 1
-    f = lambda x, y: 3*x**2 - y**2
-    g = lambda x, y: 3*x*y**2 - x**3 - 1
-    xvector = [[x0], [y0]]
+    xvector = np.array([[x0], [y0]])
 
-    Nmax = 100
-    tol = 10E-6
+    Nmax = 10
+    tol = 10E-4
 
-    [vector, ier, its] = Newton(xvector, F, J, tol, Nmax)
-    print('The Newton method iteration has the vector as', vector)
-    print('')
-    print('The x-values are', vector[0])
-    print('')
-    print('The y-values are', vector[1])
+    [vector, ier, its] = Newton(xvector, tol, Nmax)
+    print('The Newton method is', vector)
 
-def Newton(x0, y0, tol,Nmax):
-
-    ''' inputs: x0 = initial guess, tol = tolerance, Nmax = max its'''
-    ''' Outputs: xstar= approx root, ier = error message, its = num its'''
+def Newton(xvector, tol, Nmax):
 
     for its in range(Nmax):
-       x0vector = np.array([[x0], [y0]])
-       J = evalJ(x0, y0)
+       J = evalJ(xvector)
        Jinv = inv(J)
-       F = evalF(x0, y0)
+       F = evalF(xvector)
        
-       x1vector = x0vector - Jinv.dot(F)
+       print ('This is J inverse dot F', Jinv.dot(F))
+
+       x1vector = xvector - Jinv.dot(F)
        
-       if (norm(x1vector-x0vector) < tol):
+       if (norm(x1vector - xvector) < tol):
            xstar = x1vector
            ier =0
            return[xstar, ier, its]
            
-       x0vector = x1vector
+       xvector = x1vector
+       print('This is the new xvector', xvector)
     
     xstar = x1vector
     ier = 1
     return[xstar,ier,its]
 
 
-question1a()
+#question1a()
 question1c()
-    
+
+
 
 
