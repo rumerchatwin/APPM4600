@@ -37,12 +37,11 @@ def question1a():
 def question1c():
     x0 = 1
     y0 = 1
-    N = 20
+    N = 50
     tol = 10E-6
-    print(findF(x0,y0))
-    print(findJ(x0,y0))
-    [xstar, ier, k] = Newton( x0, y0, tol, N)
+    [xstar, i] = Newton( x0, y0, tol, N)
     print('The answer is', xstar)
+    print('It took', i)
 
 
 #finding the F array first
@@ -65,32 +64,25 @@ def findJ(x,y):
 
 
 #Defining Newtons method for 2x2 matrix
-def Newton(x, y, tol, nmax):
-    k = 1
-    xvector = np.array([[x],
-                        [y]])
-    
-    while (k <= nmax):
-        xvector = np.array([[x],
-                            [y]])
-        F = findF(x,y)
-        J = findJ(x, y)
-        jinv = inv(J)
+def Newton(x0, y0, tol, Nmax):
+    i = 1
+    while (i <= Nmax):
+        xvector = np.array([[x0],[y0]])
+        F = findF(x0, y0)
+        J = findJ(x0, y0)
+        Jinv = inv(J)
 
-        x1 = xvector - jinv.dot(F)
-
-        if (norm(x1) < tol):
-            xstar = x1
-            ier = 0
-            return[xstar, ier, k]
+        x1 = np.array(xvector - np.dot(Jinv, F), dtype=float)
+        if (norm(x1-xvector) < tol):
+            xfinal = x1
+            return[xfinal, i]
         
-        x = x1[0]
-        y = x1[1]
-        k =+ 1
-    
-    xstar = xvector
-    ier = 1
-    return[xstar, ier, k]
+        x0 = x1[0][0]
+        y0 = x1[1][0]
+        i += 1
+        
+    xfinal = xvector
+    return[xfinal,i]
         
 
 question1c()
