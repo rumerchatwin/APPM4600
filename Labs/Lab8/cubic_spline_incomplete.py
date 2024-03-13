@@ -67,10 +67,28 @@ def create_natural_spline(yint,xint,N):
 #  create matrix so you can solve for the M values
 # This is made by filling one row at a time 
     A = np.zeros((N+1,N+1))
+    row = 0
+    column = 0
+    k = 2
+    A[0][0] = 1
+    A[N][N] = 1
 
-    '''Ainv = 
+    row = 1
+    for row in len(N-1):
+        for column in len(N+1):
+            if row == column:
+                A[row][column] = h[k-2]
+                k += 1
+            elif column == (row + 1):
+                A[row][column] = 2*(h[k-2] + h[k-1])
+                k += 1
+            elif column == (row - 1):
+                A[row][column] = h[k-1]
+                k += 1    
+            
+    Ainv = inv(A)
     
-    M  = '''
+    M  = Ainv.dot(b)
 
 #  Create the linear coefficients
     C = np.zeros(N)
@@ -86,7 +104,7 @@ def eval_local_spline(xeval,xi,xip,Mi,Mip,C,D):
 # Mip = M_{i+1}; Mi = M_i
 
     hi = xip-xi
-    '''yeval = '''
+    yeval = 
     return yeval 
     
     

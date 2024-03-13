@@ -8,6 +8,7 @@ def driver():
     f = lambda x: 1/(1 + (10*x)**2)
 
     N = 15
+    
     ''' interval'''
     a = -1
     b = 1
@@ -45,10 +46,10 @@ def driver():
     fex = f(xeval)
 
     plt.figure()
-    plt.plot(xeval,fex,'ro-')
-    plt.plot(xeval,yeval_l,'bs--')
-    plt.plot(xeval,yeval_dd,'c.--')
-    plt.plot(xeval,yeval_ls,'g--')
+    plt.plot(xeval,fex,'ro-', label = 'function')
+    plt.plot(xeval,yeval_l,'bs--', label = 'lagrange')
+    plt.plot(xeval,yeval_dd,'c.--', label = 'Newton DD')
+    plt.plot(xeval,yeval_ls,'g--', label = 'line spline')
     plt.legend()
 
     plt.figure()
