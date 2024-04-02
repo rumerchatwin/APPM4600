@@ -5,25 +5,10 @@ import math
 from scipy.integrate import quad
 from scipy.special import legendre
 
-
-def eval_legendre(n, x):
-    p = np.zeros(n + 1)
-    p[0] = 1
-    p[1] = x
-    i = 1
-    for i in range(n):
-        p[i+1] = (1/(i+1)) * ( ( (2*i+1)*(x*p[i]) - i*p[i-1]) )
-
-    return(p)
-
-
-
-
-prelab10()
 # Code for later
-'''def driver():
+def driver():
     # function you want to approximate
-    f = lambda x: math.exp(x)
+    f = lambda x: 1/(1+x**2)
     # Interval of interest
     a = -1
     b = 1
@@ -52,27 +37,53 @@ prelab10()
     plt.legend()
     plt.show()
 
+def eval_legendre(n, x):
+    p = np.zeros(n + 1)
+    p[0] = 1
+    p[1] = x
+    i = 1
+    for i in range(1,n):
+        p[i+1] = (1/(i+1)) * ( ( (2*i+1)*(x*p[i]) - i*p[i-1]) )
+
+    return(p)
+
+def numerator_coeffciants(a, b, p_j, f, w):
+    numerator = quad(p_j*f*w, a, b)
+    return(numerator)
+
+def denomiantor_coeffciants(a, b, p_j, w):
+    denomiantor = quad((p_j**2) * w, a, b)
+    return(denomiantor)
+
+def coefficants(num, den):
+    a = num / den
+    
+    return(a)
+
 def eval_legendre_expansion(f,a,b,w,n,x):
     # This subroutine evaluates the Legendre expansion
     # Evaluate all the Legendre polynomials at x that are needed
     # by calling your code from prelab
-    p = ...
+    p = eval_legendre(n, x)
+    
     # initialize the sum to 0
     pval = 0.0
     for j in range(0,n+1):
-    # make a function handle for evaluating phi_j(x)
-    phi_j = lambda x: ...
-    # make a function handle for evaluating phi_j^2(x)*w(x)
-    phi_j_sq = lambda x: ...
-    # use the quad function from scipy to evaluate normalizations
-    norm_fac,err = ...
-    # make a function handle for phi_j(x)*f(x)*w(x)/norm_fac
-    func_j = lambda x: ...
-    # use the quad function from scipy to evaluate coeffs
-    aj,err = ...
-    # accumulate into pval
-    pval = pval+aj*p[j]
+        # make a function handle for evaluating phi_j(x)
+        phi_j = lambda x: p[j]
+        # make a function handle for evaluating phi_j^2(x)*w(x)
+        # phi_j_sq = lambda x: denomiantor_coeffciants(a, b, phi_j, w)
+        phi_j_sq = lambda x: w(x)*phi_j(x)**2
+        # use the quad function from scipy to evaluate normalizations
+        norm_fac,err = quad(phi_j_sq, a, b)
+        # make a function handle for phi_j(x)*f(x)*w(x)/norm_fac
+        # func_j = lambda x: numerator_coeffciants(a, b, phi_j, f, w) / norm_fac
+        func_j = lambda x: phi_j(x)*f(x)*w(x)/phi_j_sq
+        # use the quad function from scipy to evaluate coeffs
+        aj,err = quad(func_j, a, b)
+        # accumulate into pval
+        pval = pval + aj*p[j]
     return pval
-    if __name__ == '__main__':
-    # run the drivers only if this is called from the command line'''
+
+driver()
 
