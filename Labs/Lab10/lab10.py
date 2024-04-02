@@ -16,10 +16,7 @@ def eval_legendre(n, x):
 
     return(p)
 
-def prelab10():
-    n = 2
-    x = 1
-    p = eval_legendre(n, x)
+
 
 
 prelab10()
