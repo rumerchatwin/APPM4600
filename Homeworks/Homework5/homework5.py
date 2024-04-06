@@ -49,17 +49,3 @@ def question3():
 
 question3()
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-#question4()
