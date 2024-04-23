@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import numpy.linalg as la
 import scipy.linalg as scila
-
+import time as time
 
 def driver():
 
@@ -15,19 +15,36 @@ def driver():
      ''' Right hand side'''
      b = np.random.rand(N,1)
      A = np.random.rand(N,N)
-  
+     t_start = time.perf_counter()
      x = scila.solve(A,b)
-     
+     t_stop = time.perf_counter()
+     time0 = t_stop - t_start
      test = np.matmul(A,x)
      r = la.norm(test-b)
      
-     print(r)
+     ''' Exercise 3.2: Question 1'''
+     t1_start = time.perf_counter()
+     lu, piv = scila.lu_factor(A)
+     t1_stop = time.perf_counter()
 
+     t2_start = time.perf_counter()
+     x = scila.lu_solve((lu, piv), b)
+     t2_stop = time.perf_counter()
+
+     time1 = t1_stop - t1_start
+     time2 = t2_stop - t2_start
+
+     print('Time for method 1:', time0)
+
+def exercise():
      ''' Create an ill-conditioned rectangular matrix '''
      N = 10
      M = 5
      A = create_rect(N,M)     
      b = np.random.rand(N,1)
+
+
+
 
 
      
@@ -53,6 +70,4 @@ def create_rect(N,M):
      return B     
           
   
-if __name__ == '__main__':
-      # run the drivers only if this is called from the command line
-      driver()       
+driver()   
