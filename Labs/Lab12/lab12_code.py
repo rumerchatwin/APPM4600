@@ -42,6 +42,8 @@ def exercise():
      M = 5
      A = create_rect(N,M)     
      b = np.random.rand(N,1)
+     
+
 
 
 
@@ -70,4 +72,5 @@ def create_rect(N,M):
      return B     
           
   
-driver()   
+#driver()
+exercise()   
