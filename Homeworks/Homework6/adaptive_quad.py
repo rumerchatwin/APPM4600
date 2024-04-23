@@ -125,4 +125,3 @@ def adaptive_quad(a,b,f,tol,M,method):
         j = maxit
   return I,np.unique(X),nsplit
 
-driver()

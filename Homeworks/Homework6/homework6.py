@@ -1,13 +1,22 @@
 import numpy as np
 import numpy.linalg as la
-from adaptive_quad import *
+
 
 def question1():
     a = -5
     b = 5
     f = lambda x: 1/(1+x**2)
     tol = 10e-4
+    n_trap = 41
+    n_simp = 107
+    I_trap, x_trap, w_trap = traprule(a,b,f,n_trap)
+    I_simp, x_simp, w_simp = simprule(a,b,f,n_simp)
+
+    print('The trapezodial rule Tn comes to', I_trap)
+    print('The simpsons rule comes to', I_simp)
     
+
+
 
 
 
@@ -21,7 +30,7 @@ def traprule(a,b,f,n):
   I_hat = np.sum(f(x)*w)
   return I_hat,x,w
 
-def eval_composite_simpsons(n,a,b,f):
+def simprule(a,b,f,n):
   x = np.linspace(a,b,n)
   h = (b-a)/(n-1)
   # Explain why this defines the weights for Simpsons
@@ -31,3 +40,5 @@ def eval_composite_simpsons(n,a,b,f):
 
   I_hat = np.sum(f(x)*w)
   return I_hat,x,w
+
+question1()
