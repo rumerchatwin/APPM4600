@@ -1,5 +1,6 @@
 import numpy as np
 import numpy.linalg as la
+from scipy import integrate
 
 
 def question1():
@@ -12,8 +13,13 @@ def question1():
     I_trap, x_trap, w_trap = traprule(a,b,f,n_trap)
     I_simp, x_simp, w_simp = simprule(a,b,f,n_simp)
 
+    quad1 = integrate.quad(f, a, b, epsrel = 10e-4)
+    quad2 = integrate.quad(f, a, b, epsrel = 10e-6)
+
     print('The trapezodial rule Tn comes to', I_trap)
     print('The simpsons rule comes to', I_simp)
+    print('The scipy quad version with 10e-4 is', quad1)
+    print('The scipy quad version with 10e-6 is', quad2)
     
 
 
