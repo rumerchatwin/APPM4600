@@ -3,33 +3,74 @@ import numpy as np;
 import numpy.linalg as la;
 from gauss_legendre import *;
 from scipy import integrate
+from scipy.special import gamma, factorial
 # adaptive quad subroutines
 # the following three can be passed
 # as the method parameter to the main adaptive_quad() function
 
-def driver():
+def question1():
     a = -5
     b = 5
     f = lambda x: 1/(1+x**2)
     tol = 10e-4
-    n_trap = 41
+    n_trap = 1291
     n_simp = 107
     method_trap = eval_composite_trap
     method_simp = eval_composite_simpsons
-    method_quad = eval_gauss_quad
 
     (I_trap, uniquex, nsplit_trap) = adaptive_quad(a, b, f, tol, n_trap, method_trap)
     print('The I for trap method is', I_trap)
-    print('The nsplit is', nsplit_trap)
 
     (I_simp, uniquex_simp, nsplit_simp) = adaptive_quad(a, b, f, tol, n_simp, method_simp)
     print('The I for simpson method is', I_simp)
-    print('The nsplit is', nsplit_simp)
 
-    quad1 = integrate.quad(f, a, b, epsrel = 10e-4)
-    quad2 = integrate.quad(f, a, b, epsrel = 10e-6)
+    quad1, err, info1 = integrate.quad(f, a, b, full_output=1)
+    quad2, err2, info2 = integrate.quad(f, a, b,full_output=1,epsabs=10e-6,epsrel=10e-6)
     print('The scipy quad version with 10e-4 is', quad1)
+    print('The number of functions is', info1['neval'])
     print('The scipy quad version with 10e-6 is', quad2)
+    print('The number of functions is', info2['neval'])
+
+def question4():
+  a = 0
+  b = 100
+  t = np.array([2, 4, 6, 8, 10])
+  tol = 10e-4
+  n = 41
+  method_trap = eval_composite_trap
+  i = 0
+  while (i < len(t)):
+    f = lambda x: (x**(t[i]-1))*(np.e**-x)
+    (I_trap, uniquex, nsplit_trap) = adaptive_quad(a, b, f, tol, n, method_trap)
+    quad1, err, info1 = integrate.quad(f, a, b, full_output=1)
+    print('The scipy quad version is', quad1)
+    print('The number of functions is', info1['neval'])
+    print('The I for trap method is', I_trap)
+    i = i + 1
+
+  g = gamma(t)
+  print('The gamma function', g)
+
+  N = 10
+
+  points, w = np.polynomial.laguerre.laggauss(N)
+
+
+  j = 0
+  f = lambda x: x**(t-1)
+  k = 0
+  T = 0
+
+  while (k < N):
+
+    T = T + (w[k] * f(points[k]))
+    k = k + 1
+    j = j + 1
+  print('The Gauss approx is', T)
+
+
+
+
 
 
 
@@ -125,3 +166,4 @@ def adaptive_quad(a,b,f,tol,M,method):
         j = maxit
   return I,np.unique(X),nsplit
 
+question4()
